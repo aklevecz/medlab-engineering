@@ -2,7 +2,7 @@
   "name": "default",
   "database": "medlab",
   "type": "sqlite",
-  "synchronize": true,
+  "synchronize": false,
   "logging": false,
   "host": "localhost",
   "port": 5432,

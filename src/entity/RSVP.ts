@@ -7,10 +7,9 @@ import {
   UpdateDateColumn
 } from "typeorm";
 import { Length, IsNotEmpty } from "class-validator";
-import * as bcrypt from "bcryptjs";
 
 @Entity()
-@Unique(["email"])
+@Unique("UQ_RSVP", ["email", "event"])
 export class RSVP {
   @PrimaryGeneratedColumn()
   id: number;
@@ -19,8 +18,14 @@ export class RSVP {
   @Length(4, 100)
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
+  qrId: string;
+
+  @Column({ nullable: true })
   event: string;
+
+  @Column({ default: false })
+  boop: boolean;
 
   @Column()
   @CreateDateColumn()

@@ -19,7 +19,7 @@ export class User {
   @Length(4, 20)
   raptorname: string;
 
-  @Column({ default: "wtfa" })
+  @Column({ default: "wtfb" })
   @Length(4, 100)
   email: string;
 

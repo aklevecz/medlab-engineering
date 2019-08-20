@@ -20,12 +20,15 @@ class AuthController {
     const userRepository = getRepository(User);
     let user: User;
     try {
-      user = await userRepository.findOneOrFail({ where: { username } });
+      user = await userRepository.findOneOrFail({
+        where: { raptorname: username }
+      });
     } catch (error) {
       res.status(401).send();
     }
 
     //Check if encrypted password match
+    console.log(!user.checkIfUnencryptedPasswordIsValid(password));
     if (!user.checkIfUnencryptedPasswordIsValid(password)) {
       res.status(401).send();
       return;
@@ -39,7 +42,8 @@ class AuthController {
     );
 
     //Send the jwt in the response
-
+    console.log("wat");
+    console.log(user);
     res.send({ ...user, token });
   };
 
@@ -83,11 +87,6 @@ class AuthController {
   };
 
   static register = async (req: Request, res: Response) => {
-    // const id = res.locals.jwtPayload.userId
-    // if (id) {
-    //   console.log('why do you have an ID if you are registering?')
-    // }
-    console.log("ehlo?");
     let { username, email, password } = req.body;
     console.log(username, email, password);
     if (!(username && password)) {
@@ -95,7 +94,7 @@ class AuthController {
         .status(400)
         .send("either your raptorname or password is missing");
     }
-
+    console.log(password);
     let user = new User();
     user.raptorname = username;
     user.password = password;
@@ -128,44 +127,6 @@ class AuthController {
     );
 
     res.send({ ...user, token });
-  };
-
-  static rsvp = async (req: Request, res: Response) => {
-    const { email } = req.body;
-    console.log(email);
-    if (!email) {
-      return res.status(400).send("I don't see an email here!");
-    }
-    let rsvp = new RSVP();
-    rsvp.email = email;
-    rsvp.event = "raptorhole";
-
-    const rsvpRepo = getRepository(RSVP);
-
-    try {
-      await rsvpRepo.save(rsvp);
-    } catch (e) {
-      res.status(409).send("you have already signed up bro");
-    }
-
-    // send them an email
-    var opts = {
-      errorCorrectionLevel: "H",
-      type: "image/jpeg",
-      rendererOpts: {
-        quality: 0.3
-      }
-    };
-    const makeQR = async text => {
-      const qr = await QRCode.toDataURL(text, opts);
-      return qr;
-    };
-    console.log("about to make QR");
-
-    const qrPng = await makeQR(`${email}`);
-    console.log("Qqr mADe");
-    console.log(qrPng);
-    res.send(`${qrPng}`);
   };
 }
 export default AuthController;
