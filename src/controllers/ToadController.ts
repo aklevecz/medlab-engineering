@@ -40,9 +40,9 @@ class ToadController {
       where: { qrId, owner: userId }
     });
     console.log(checkToad);
-    if (checkToad) {
-      return res.send({ message: "chu got a toad yo" });
-    }
+    // if (checkToad) {
+    //   return res.send({ message: "chu got a toad yo" });
+    // }
     console.log(qrId);
     let toad = new Toad();
     toad.owner = userId;
@@ -52,6 +52,8 @@ class ToadController {
     await toadRespository.save(toad);
 
     const wab3 = new Wab3("geordi");
+
+    console.log(wab3.wab3.eth.getAccounts().then(console.log));
     const toadtract = wab3.getToadtract();
     console.log(toad.id, qrId);
     const testAccount = "0xdE6b38c22C94dbcA3Eb382747b5648C5c5f13641";
@@ -63,7 +65,7 @@ class ToadController {
     const tx = toadtract.methods
       .mintWithTokenURI(testAccount, toad.id, JSON.stringify(uriData))
       .send({
-        from: "0xe351f32F4d0Ac84AD3B382E6B7e23F3fDF28D639",
+        from: process.env.GEORDI_PUB_ADDRESS,
         gas: "100000000"
       });
 
@@ -71,8 +73,10 @@ class ToadController {
     var opts = {
       errorCorrectionLevel: "H",
       type: "image/jpeg",
+      color: { light: "#ff4500" },
+      width: 400,
       rendererOpts: {
-        quality: 0.3
+        quality: 1
       }
     };
 
@@ -84,8 +88,9 @@ class ToadController {
     // NEED TO EITHER PLACE A MARKER TO SPLIT THE IDs THAT WILL HAVE TWO DIGITS OR THINK OF SOMETHING ELSE
     // RANDOM LETTERS PERHAPS-- BUT STILL NEED TO PICK UP THE ID
     const taxonomy = `t${toad.id * 2}o${toad.id * 3}a${toad.id * 5}d`;
-    const qrPng = await makeQR(`${taxonomy}?${qrId}`);
-
+    const combined = `${taxonomy}?${qrId}`;
+    const qrPng = await makeQR(combined);
+    console.log(combined);
     // // Send them an email
     // let testAccount = await nodemailer.createTestAccount();
     // let transporter = nodemailer.createTransport({
@@ -124,8 +129,7 @@ class ToadController {
     // EMAIL LOGIC &&&&
 
     // send the QR back to be viewed
-    res.set("Content-Type", "text/html");
-    res.send(`<img src=${qrPng}></img>`);
+    res.send({ qrPng });
   };
 
   static yours = async (req: Request, res: Response) => {
@@ -152,7 +156,7 @@ class ToadController {
     // NEED TO EITHER PLACE A MARKER TO SPLIT THE IDs THAT WILL HAVE TWO DIGITS OR THINK OF SOMETHING ELSE
     // RANDOM LETTERS PERHAPS-- BUT STILL NEED TO PICK UP THE ID
     const taxonomy = `t${yours.id * 2}o${yours.id * 3}a${yours.id * 5}d`;
-    const qrPng = await makeQR(`${taxonomy}?$${yours.qrId}`);
+    const qrPng = await makeQR(`${taxonomy}?${yours.qrId}`);
     res.send([{ qrPng, id: yours.id }]);
   };
 
@@ -180,7 +184,7 @@ class ToadController {
         const toad = await toadRepo.findOne(tokenId);
         // don't really need to await this if the bcrypt checks out and it hasn't been booped
         toadtract.methods.boopIt(tokenId).send({
-          from: "0xe351f32F4d0Ac84AD3B382E6B7e23F3fDF28D639",
+          from: process.env.GEORDI_PUB_ADDRESS,
           gas: "100000000"
         });
 

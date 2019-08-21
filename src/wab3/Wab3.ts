@@ -5,8 +5,8 @@ class Wab3 {
   wab3: any;
   constructor(officer) {
     if (officer === "geordi") {
-      const { GEORDI, GEORDI_KEY, RPC_ENDPOINT } = process.env;
-      const url = `https://${GEORDI}:${GEORDI_KEY}@${RPC_ENDPOINT}`;
+      const { GEORDI, RPC_ENDPOINT } = process.env;
+      const url = `https://${GEORDI}@${RPC_ENDPOINT}`;
       const provider = new Web3.providers.HttpProvider(url);
       const web3 = new Web3(provider);
       this.wab3 = web3;
