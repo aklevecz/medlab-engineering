@@ -4,11 +4,11 @@
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
-    "outDir": "./dist",
+    "outDir": "./build",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "sourceMap": true
   },
-  "include": ["src/wab3/*.json"]
+  "include": ["src/**.ts", "src/wab3/*.json"]
 }
