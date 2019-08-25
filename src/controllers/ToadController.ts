@@ -162,7 +162,7 @@ class ToadController {
 
   static boopToad = async (req: Request, res: Response) => {
     console.log(req.body);
-    console.log("WHAT THE FUK");
+    console.log("WHAT THE FUK", process.env.TOAD_ADDRESS);
     const { qr } = req.body;
     const qrSplit = qr.split("?");
     const taxonomy = qrSplit[0];
