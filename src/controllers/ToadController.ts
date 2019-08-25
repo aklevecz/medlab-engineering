@@ -182,6 +182,7 @@ class ToadController {
       if (bcrypt.compareSync(qrSplit[1], qrId)) {
         const toadRepo = getRepository(Toad);
         const toad = await toadRepo.findOne(tokenId);
+        console.log(toad);
         // don't really need to await this if the bcrypt checks out and it hasn't been booped
         toadtract.methods.boopIt(tokenId).send({
           from: process.env.GEORDI_PUB_ADDRESS,
@@ -190,6 +191,7 @@ class ToadController {
 
         toad.boop = true;
         toadRepo.save(toad);
+        console.log("toad saved");
         return res.send({ qrId });
       }
     } else if (type === "r") {
