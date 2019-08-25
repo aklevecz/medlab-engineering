@@ -36,8 +36,9 @@
     "web3": "^1.2.1"
   },
   "scripts": {
-    "tsc": "tsc",
-    "start": "set debug=* && ts-node-dev --respawn --transpileOnly ./src/index.ts",
+    "build": "tsc",
+    "start": "NODE_ENV=production node build/index.js",
+    "dev": "set debug=* && ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "test": "jest",
     "prod": "tsc && node ./build/app.js",
     "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run"
