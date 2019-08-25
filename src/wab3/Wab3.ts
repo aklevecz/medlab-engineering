@@ -1,5 +1,5 @@
 import * as Web3 from "web3";
-const Toadtract = require("./Toad.json");
+const Toadtract = require("../Toad.json");
 
 class Wab3 {
   wab3: any;
