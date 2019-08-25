@@ -17,14 +17,7 @@ createConnection({
   synchronize: true,
   logging: true,
   url: process.env.DATABASE_URL,
-  entities: [Toad, RSVP, User],
-  migrations: ["src/migration/**/*.ts"],
-  subscribers: ["src/subscriber/**/*.ts"],
-  cli: {
-    entitiesDir: "src/entity",
-    migrationsDir: "src/migration",
-    subscribersDir: "src/subscriber"
-  }
+  entities: [Toad, RSVP, User]
 })
   .then(async connection => {
     // Create a new express application instance
