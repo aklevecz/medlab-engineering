@@ -37,7 +37,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "NODE_ENV=production node build/index.js",
+    "start": "NODE_ENV=production node dist/index.js",
     "dev": "set debug=* && ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "test": "jest",
     "prod": "tsc && node ./build/app.js",
