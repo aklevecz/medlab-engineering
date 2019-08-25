@@ -181,6 +181,7 @@ class ToadController {
       console.log(qrId);
       if (bcrypt.compareSync(qrSplit[1], qrId)) {
         const toadRepo = getRepository(Toad);
+        console.log("looking for toad");
         const toad = await toadRepo.findOne(tokenId);
         console.log(toad);
         // don't really need to await this if the bcrypt checks out and it hasn't been booped
