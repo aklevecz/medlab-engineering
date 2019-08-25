@@ -10,5 +10,5 @@
     "resolveJsonModule": true,
     "sourceMap": true
   },
-  "include": ["src/*.ts", "src/wab3/*.json"]
+  "include": ["src/**/*.ts", "src/**/*.json"]
 }
