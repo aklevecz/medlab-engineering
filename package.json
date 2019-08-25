@@ -37,6 +37,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "postinstall": "npm run build",
     "start": "NODE_ENV=production node build/index.js",
     "dev": "set debug=* && ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "test": "jest",
