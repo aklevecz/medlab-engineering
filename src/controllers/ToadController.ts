@@ -93,32 +93,32 @@ class ToadController {
     console.log(combined);
     // // Send them an email
     // let testAccount = await nodemailer.createTestAccount();
-    // let transporter = nodemailer.createTransport({
-    //   service: "gmail",
-    //   secure: false, // true for 465, false for other ports
-    //   auth: {
-    //     user: "teh@raptor.pizza", // generated ethereal user
-    //     pass: process.env.GOOGLE_MAIL // generated ethereal password
-    //   }
-    // });
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: "teh@raptor.pizza", // generated ethereal user
+        pass: process.env.GOOGLE_MAIL // generated ethereal password
+      }
+    });
 
-    // transporter.use("compile", inlineBase64({ cidPrefix: "somePrefix_" }));
+    transporter.use("compile", inlineBase64({ cidPrefix: "somePrefix_" }));
 
-    // const email = "arielklevecz@gmail.com";
-    // let info = await transporter.sendMail({
-    //   from: "teh@raptor.pizza", // sender address
-    //   to: email, // list of receivers
-    //   subject: "Hello ✔", // Subject line
-    //   text: "Hello world?", // plain text body
-    //   html: "<b>Hello world?</b>", // html body
-    //   attachments: [
-    //     {
-    //       filename: "shrOMP.png",
-    //       content: qrPng.split("base64,")[1],
-    //       encoding: "base64"
-    //     }
-    //   ]
-    // });
+    const email = "arielklevecz@gmail.com";
+    let info = await transporter.sendMail({
+      from: "teh@raptor.pizza", // sender address
+      to: email, // list of receivers
+      subject: "Hello ✔", // Subject line
+      text: "Hello world?", // plain text body
+      html: "<b>Hello world?</b>", // html body
+      attachments: [
+        {
+          filename: "shrOMP.png",
+          content: qrPng.split("base64,")[1],
+          encoding: "base64"
+        }
+      ]
+    });
 
     // console.log("Message sent: %s", info.messageId);
     // // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
