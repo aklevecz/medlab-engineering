@@ -6,6 +6,9 @@ import * as bodyParser from "body-parser";
 import * as helmet from "helmet";
 import * as cors from "cors";
 import routes from "./routes";
+import { Toad } from "./entity/Toad";
+import { RSVP } from "./entity/RSVP";
+import { User } from "./entity/User";
 //Connects to the Database -> then starts the express
 let app;
 createConnection({
@@ -14,7 +17,7 @@ createConnection({
   synchronize: true,
   logging: true,
   url: process.env.DATABASE_URL,
-  entities: ["src/entity/**/*.ts"],
+  entities: [Toad, RSVP, User],
   migrations: ["src/migration/**/*.ts"],
   subscribers: ["src/subscriber/**/*.ts"],
   cli: {
