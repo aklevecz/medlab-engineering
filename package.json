@@ -36,9 +36,8 @@
     "web3": "^1.2.1"
   },
   "scripts": {
-    "build": "tsc",
-    "postinstall": "npm run build",
-    "start": "NODE_ENV=production node build/index.js",
+    "build": "tsc --project tsconfig.server.json",
+    "start": "NODE_ENV=production node dist/index.js",
     "dev": "set debug=* && ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "test": "jest",
     "prod": "tsc && node ./build/app.js",
