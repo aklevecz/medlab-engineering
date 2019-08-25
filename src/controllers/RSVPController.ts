@@ -123,7 +123,7 @@ class RSVPController {
     //   secure: false,
     //   auth: {
     //     user: "postmaster@mercury.raptor.pizza", // generated ethereal user
-    //     pass: "0697ba078ecec07142fe549f236cb2f4-73ae490d-384c8c0a" // generated ethereal password
+    //     pass: process.env.MAILGUN_KEY // generated ethereal password
     //   }
     // });
 

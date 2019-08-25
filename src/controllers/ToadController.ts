@@ -98,7 +98,7 @@ class ToadController {
     //   secure: false, // true for 465, false for other ports
     //   auth: {
     //     user: "teh@raptor.pizza", // generated ethereal user
-    //     pass: "nkmttanypzbpktbr" // generated ethereal password
+    //     pass: process.env.GOOGLE_MAIL // generated ethereal password
     //   }
     // });
 
