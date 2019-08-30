@@ -11,14 +11,21 @@ import { RSVP } from "./entity/RSVP";
 import { User } from "./entity/User";
 //Connects to the Database -> then starts the express
 let app;
-createConnection({
-  name: "default",
-  type: "postgres",
-  synchronize: true,
-  logging: true,
-  url: process.env.DATABASE_URL,
-  entities: [Toad, RSVP, User]
-})
+console.log(process.env.NODE_ENV);
+const ormFig =
+  process.env.NODE_ENV === "production"
+    ? {
+        name: "default",
+        type: "postgres",
+        synchronize: true,
+        logging: true,
+        url: process.env.DATABASE_URL,
+        entities: [Toad, RSVP, User]
+      }
+    : null;
+
+console.log(ormFig);
+createConnection(null)
   .then(async connection => {
     // Create a new express application instance
     app = express();

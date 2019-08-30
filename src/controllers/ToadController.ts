@@ -7,6 +7,9 @@ import { User } from "../entity/User";
 const uuidv4 = require("uuid/v4");
 const uuidv3 = require("uuid/v3");
 import * as bcrypt from "bcryptjs";
+import { createCanvas, loadImage } from "canvas";
+import { chicken65 } from "../base64/constants";
+import { EmailTemplate } from "./EmailTemplate";
 
 import * as nodemailer from "nodemailer";
 import * as QRCode from "qrcode";
@@ -35,7 +38,6 @@ class ToadController {
 
     // Creates a toad
     const toadRespository = getRepository(Toad);
-
     const checkToad = await toadRespository.findOne({
       where: { qrId, owner: userId }
     });
@@ -43,32 +45,37 @@ class ToadController {
     // if (checkToad) {
     //   return res.send({ message: "chu got a toad yo" });
     // }
+
     console.log(qrId);
-    let toad = new Toad();
-    toad.owner = userId;
-    toad.cat = cat;
-    toad.qrId = qrId;
+    // **** COMMENTING OUT TOAD CREATION
+    // let toad = new Toad();
+    // toad.owner = userId;
+    // toad.cat = cat;
+    // toad.qrId = qrId;
 
-    await toadRespository.save(toad);
+    // await toadRespository.save(toad);
 
-    const wab3 = new Wab3("geordi");
+    // const wab3 = new Wab3("geordi");
 
-    console.log(wab3.wab3.eth.getAccounts().then(console.log));
-    const toadtract = wab3.getToadtract();
-    console.log(toad.id, qrId);
-    const testAccount = "0xdE6b38c22C94dbcA3Eb382747b5648C5c5f13641";
-    const uriData = {
-      username,
-      qrId: bcrypt.hashSync(qrId, 8)
-    };
-    console.log(uriData);
-    const tx = toadtract.methods
-      .mintWithTokenURI(testAccount, toad.id, JSON.stringify(uriData))
-      .send({
-        from: process.env.GEORDI_PUB_ADDRESS,
-        gas: "100000000"
-      });
+    // console.log(wab3.wab3.eth.getAccounts().then(console.log));
+    // const toadtract = wab3.getToadtract();
+    // console.log(toad.id, qrId);
+    // const testAccount = "0xdE6b38c22C94dbcA3Eb382747b5648C5c5f13641";
+    // const uriData = {
+    //   username,
+    //   qrId: bcrypt.hashSync(qrId, 8)
+    // };
+    // console.log(uriData);
+    // const tx = toadtract.methods
+    //   .mintWithTokenURI(testAccount, toad.id, JSON.stringify(uriData))
+    //   .send({
+    //     from: process.env.GEORDI_PUB_ADDRESS,
+    //     gas: "100000000"
+    //   });
 
+    // *******
+
+    const toad = { id: 5 };
     // EMAIL LOGIC &&&&
     var opts = {
       errorCorrectionLevel: "H",
@@ -90,7 +97,17 @@ class ToadController {
     const taxonomy = `t${toad.id * 2}o${toad.id * 3}a${toad.id * 5}d`;
     const combined = `${taxonomy}?${qrId}`;
     const qrPng = await makeQR(combined);
-    console.log(combined);
+
+    const canvas = createCanvas(1080, 1080);
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, 1080, 1080);
+    const ticketTemplate = await loadImage(chicken65);
+    ctx.drawImage(ticketTemplate, 0, 0);
+    const qrPNG = await loadImage(qrPng);
+    ctx.drawImage(qrPNG, 650, 500);
+    const canvasURL = canvas.toDataURL();
+
     // // Send them an email
     // let testAccount = await nodemailer.createTestAccount();
     let transporter = nodemailer.createTransport({
@@ -103,18 +120,17 @@ class ToadController {
     });
 
     transporter.use("compile", inlineBase64({ cidPrefix: "somePrefix_" }));
-
     const email = "arielklevecz@gmail.com";
     let info = await transporter.sendMail({
       from: "teh@raptor.pizza", // sender address
       to: email, // list of receivers
-      subject: "Hello ✔", // Subject line
+      subject: "VALENCIA ROOM NOV 2", // Subject line
       text: "Hello world?", // plain text body
-      html: "<b>Hello world?</b>", // html body
+      html: EmailTemplate(qrPng), // html body
       attachments: [
         {
           filename: "shrOMP.png",
-          content: qrPng.split("base64,")[1],
+          content: canvasURL.split("base64,")[1],
           encoding: "base64"
         }
       ]

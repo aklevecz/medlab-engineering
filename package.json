@@ -16,6 +16,7 @@
     "@types/jsonwebtoken": "^8.3.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.1",
+    "canvas": "^2.6.0",
     "class-validator": "^0.9.1",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
@@ -38,7 +39,7 @@
   "scripts": {
     "build": "tsc --project tsconfig.server.json",
     "start": "NODE_ENV=production node dist/index.js",
-    "dev": "set debug=* && ts-node-dev --respawn --transpileOnly ./src/index.ts",
+    "dev": "ts-node-dev --project tsconfig.server.json src/index.ts",
     "test": "jest",
     "prod": "tsc && node ./build/app.js",
     "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run"
