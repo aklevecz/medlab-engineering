@@ -9,44 +9,21 @@ import routes from "./routes";
 import { Toad } from "./entity/Toad";
 import { RSVP } from "./entity/RSVP";
 import { User } from "./entity/User";
+import { devConfig, doConfig, herokuConfig } from "./config/ormFigs";
 //Connects to the Database -> then starts the express
-let app;
-const herokuConfig = {
-  name: "default",
-  type: "postgres",
-  synchronize: true,
-  logging: true,
-  url: process.env.DATABASE_URL,
-  entities: [Toad, RSVP, User]
-};
-
-const ormFig =
-  process.env.NODE_ENV === "production"
-    ? {
-        name: "default",
-        type: "postgres",
-        synchronize: false,
-        logging: false,
-        port: 5432,
-        username: process.env.DB_USER,
-        password: process.env.DB_PW,
-        database: process.env.DB_NAME
-      }
-    : undefined;
-createConnection({
-  name: "default",
-  type: "postgres",
-  synchronize: false,
-  logging: false,
-  port: 5432,
-  username: process.env.DB_USER,
-  password: process.env.DB_PW,
-  database: process.env.DB_NAME
-})
-  .then(async connection => {
+let app: any;
+let zeConfig: any;
+const { NODE_ENV, SPACE } = process.env;
+if (NODE_ENV === "development") {
+  zeConfig = devConfig();
+} else {
+  zeConfig = SPACE === "DO" ? doConfig() : herokuConfig();
+}
+createConnection({ ...zeConfig, entities: [Toad, RSVP, User] })
+  .then(async (connection: any) => {
     // Create a new express application instance
     app = express();
-
+    console.log(connection);
     // Call midlewares
     app.use(cors());
     app.use(helmet());
@@ -54,8 +31,9 @@ createConnection({
 
     //Set all routes from routes folder
     app.use("/", routes);
-    app.listen(process.env.PORT || 3000, () => {
-      console.log("Server started on port 3000!");
+    const port = process.env.PORT || 4000;
+    app.listen(port, () => {
+      console.log(`Server started on port ${port}!`);
     });
   })
   .catch(error => console.log(error));

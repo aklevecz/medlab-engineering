@@ -3,17 +3,19 @@
   "version": "0.0.1",
   "description": "Awesome project developed with TypeORM.",
   "devDependencies": {
-    "@types/node": "^12.7.1",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.3"
-  },
-  "dependencies": {
     "@babel/preset-typescript": "^7.3.3",
     "@types/bcryptjs": "^2.4.2",
     "@types/body-parser": "^1.17.0",
     "@types/cors": "^2.8.4",
     "@types/helmet": "0.0.42",
     "@types/jsonwebtoken": "^8.3.0",
+    "@types/node": "^12.7.4",
+    "cross-env": "^5.2.1",
+    "ts-node": "^8.3.0",
+    "ts-node-dev": "^1.0.0-pre.40",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.1",
     "canvas": "^2.6.0",
@@ -31,14 +33,14 @@
     "qrcode": "^1.4.1",
     "reflect-metadata": "^0.1.10",
     "sqlite3": "^4.0.9",
-    "ts-node-dev": "^1.0.0-pre.40",
-    "typeorm": "0.2.12",
+    "typeorm": "^0.2.12",
     "uuid": "^3.3.2",
     "web3": "^1.2.1"
   },
   "scripts": {
     "build": "tsc --project tsconfig.server.json",
-    "start": "NODE_ENV=production node dist/index.js",
+    "start:do": "cross-env NODE_ENV=production SPACE=DO node dist/index.js",
+    "start:heroku": "cross-env NODE_ENV=production SPACE=HEROKU node dist/index.js",
     "dev": "ts-node-dev --project tsconfig.server.json src/index.ts",
     "test": "jest",
     "prod": "tsc && node ./build/app.js",
