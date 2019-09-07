@@ -42,40 +42,39 @@ class ToadController {
       where: { qrId, owner: userId }
     });
     console.log(checkToad);
-    // if (checkToad) {
-    //   return res.send({ message: "chu got a toad yo" });
-    // }
+    if (checkToad) {
+      return res.send({ message: "chu got a toad yo" });
+    }
 
     console.log(qrId);
     // **** COMMENTING OUT TOAD CREATION
-    // let toad = new Toad();
-    // toad.owner = userId;
-    // toad.cat = cat;
-    // toad.qrId = qrId;
+    let toad = new Toad();
+    toad.owner = userId;
+    toad.cat = cat;
+    toad.qrId = qrId;
 
-    // await toadRespository.save(toad);
+    await toadRespository.save(toad);
 
-    // const wab3 = new Wab3("geordi");
+    const wab3 = new Wab3("geordi");
 
-    // console.log(wab3.wab3.eth.getAccounts().then(console.log));
-    // const toadtract = wab3.getToadtract();
-    // console.log(toad.id, qrId);
-    // const testAccount = "0xdE6b38c22C94dbcA3Eb382747b5648C5c5f13641";
-    // const uriData = {
-    //   username,
-    //   qrId: bcrypt.hashSync(qrId, 8)
-    // };
-    // console.log(uriData);
-    // const tx = toadtract.methods
-    //   .mintWithTokenURI(testAccount, toad.id, JSON.stringify(uriData))
-    //   .send({
-    //     from: process.env.GEORDI_PUB_ADDRESS,
-    //     gas: "100000000"
-    //   });
+    console.log(wab3.wab3.eth.getAccounts().then(console.log));
+    const toadtract = wab3.getToadtract();
+    console.log(toad.id, qrId);
+    const testAccount = "0xdE6b38c22C94dbcA3Eb382747b5648C5c5f13641";
+    const uriData = {
+      username,
+      qrId: bcrypt.hashSync(qrId, 8)
+    };
+    console.log(uriData);
+    const tx = toadtract.methods
+      .mintWithTokenURI(testAccount, toad.id, JSON.stringify(uriData))
+      .send({
+        from: process.env.GEORDI_PUB_ADDRESS,
+        gas: "100000000"
+      });
 
     // *******
 
-    const toad = { id: 5 };
     // EMAIL LOGIC &&&&
     var opts = {
       errorCorrectionLevel: "H",

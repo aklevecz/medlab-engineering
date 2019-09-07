@@ -11,7 +11,6 @@ class AuthController {
   static login = async (req: Request, res: Response) => {
     //Check if username and password are set
     let { username, password } = req.body;
-    console.log(username, password);
     if (!(username && password)) {
       res.status(400).send();
     }
@@ -24,13 +23,13 @@ class AuthController {
         where: { raptorname: username }
       });
     } catch (error) {
-      res.status(401).send();
+      res.status(401).send({ message: "raptor_not_exist" });
     }
 
     //Check if encrypted password match
     console.log(!user.checkIfUnencryptedPasswordIsValid(password));
     if (!user.checkIfUnencryptedPasswordIsValid(password)) {
-      res.status(401).send();
+      res.status(401).send({ message: "password_wrong" });
       return;
     }
 
@@ -42,8 +41,6 @@ class AuthController {
     );
 
     //Send the jwt in the response
-    console.log("wat");
-    console.log(user);
     res.send({ ...user, token });
   };
 
@@ -88,13 +85,20 @@ class AuthController {
 
   static register = async (req: Request, res: Response) => {
     let { username, email, password } = req.body;
-    console.log(username, email, password);
     if (!(username && password)) {
       return res
         .status(400)
         .send("either your raptorname or password is missing");
     }
-    console.log(password);
+
+    const userRepository = getRepository(User);
+    const aUser = await userRepository.findOne({
+      where: { raptorname: username }
+    });
+    if (aUser) {
+      return res.status(409).send({ message: "raptorname already is taken" });
+    }
+
     let user = new User();
     user.raptorname = username;
     user.password = password;
@@ -112,11 +116,15 @@ class AuthController {
     user.hashPassword();
 
     //Try to save. If fails, the username is already in use
-    const userRepository = getRepository(User);
     try {
       await userRepository.save(user);
     } catch (e) {
-      res.status(409).send("username already in use");
+      res
+        .status(409)
+        .send({
+          message:
+            "it seems you have already created an account with that email"
+        });
       return;
     }
 

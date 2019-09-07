@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import { getRepository } from "typeorm";
 import { validate } from "class-validator";
+import { createCanvas, loadImage } from "canvas";
+import { chicken65 } from "../base64/constants";
 
-const uuidv4 = require("uuid/v4");
 const uuidv3 = require("uuid/v3");
 import * as QRCode from "qrcode";
 
@@ -11,6 +12,8 @@ import * as nodemailer from "nodemailer";
 import * as inlineBase64 from "nodemailer-plugin-inline-base64";
 
 import { RSVP } from "../entity/RSVP";
+import { EmailTemplate } from "./EmailTemplate";
+import { User } from "../entity/User";
 
 class RSVPController {
   static resendEmail = async (req: Request, res: Response) => {
@@ -35,30 +38,38 @@ class RSVPController {
     console.log("about to make QR");
     const taxonomy = `r${email[0]}s${email[1]}v${email[2]}p`;
     const qrPng = await makeQR(`${taxonomy}?${rsvp.qrId}`);
-    return res.send({ qrPng });
     // Send them an email
+    const canvas = createCanvas(1080, 1080);
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, 1080, 1080);
+    const ticketTemplate = await loadImage(chicken65);
+    ctx.drawImage(ticketTemplate, 0, 0);
+    const qrPNG = await loadImage(qrPng);
+    ctx.drawImage(qrPNG, 650, 500);
+    const canvasURL = canvas.toDataURL();
+    // // Send them an email
+    // let testAccount = await nodemailer.createTestAccount();
     let transporter = nodemailer.createTransport({
-      host: "smtp.mailgun.org",
-      port: 587,
-      secure: false,
+      service: "gmail",
+      secure: false, // true for 465, false for other ports
       auth: {
-        user: "postmaster@mercury.raptor.pizza", // generated ethereal user
-        pass: process.env.MAILGUN_KEY // generated ethereal password
+        user: "teh@raptor.pizza", // generated ethereal user
+        pass: process.env.GOOGLE_MAIL // generated ethereal password
       }
     });
 
     transporter.use("compile", inlineBase64({ cidPrefix: "somePrefix_" }));
-
     let info = await transporter.sendMail({
-      from: "lab boy <postmaster@mercury.raptor.pizza>", // sender address
+      from: "teh@raptor.pizza", // sender address
       to: email, // list of receivers
-      subject: "pssssst", // Subject line
-      text: "", // plain text body
-      html: "<b>psst here is your ticky :)</b>", // html body
+      subject: "VALENCIA ROOM NOV 2", // Subject line
+      text: "Hello world?", // plain text body
+      html: EmailTemplate(qrPng), // html body
       attachments: [
         {
-          filename: "aticketforyou!.png",
-          content: qrPng.split("base64,")[1],
+          filename: "shrOMP.png",
+          content: canvasURL.split("base64,")[1],
           encoding: "base64"
         }
       ]
@@ -77,14 +88,19 @@ class RSVPController {
     const { email, event } = req.body;
     console.log(email);
     if (!email) {
-      return res.status(400).send("I don't see an email here!");
+      return res.status(400).send("no_email");
+    }
+
+    const userRepo = getRepository(User);
+    const user = await userRepo.findOne({ where: { email } });
+    if (user) {
+      return res.status(409).send({ message: "already_account" });
     }
 
     let rsvp = new RSVP();
     rsvp.email = email;
     rsvp.event = "raptorhole";
     rsvp.boop = false;
-    // const qrId = uuidv3(email + event, uuidv4());
     const qrId = uuidv3(email + event, process.env.U);
     rsvp.qrId = qrId;
     const rsvpRepo = getRepository(RSVP);
@@ -92,9 +108,7 @@ class RSVPController {
     try {
       await rsvpRepo.save(rsvp);
     } catch (e) {
-      return res
-        .status(409)
-        .send({ error: "yOu haaaaaaaaaAAAve already signed up bro" });
+      return res.status(409).send({ message: "already_rsvp" });
     }
 
     // send them an email
@@ -116,29 +130,37 @@ class RSVPController {
     const qrPng = await makeQR(`${taxonomy}?${qrId}`);
     console.log(qrPng);
 
-    // Send them an email
-    // let transporter = nodemailer.createTransport({
-    //   host: "smtp.mailgun.org",
-    //   port: 587,
-    //   secure: false,
-    //   auth: {
-    //     user: "postmaster@mercury.raptor.pizza", // generated ethereal user
-    //     pass: process.env.MAILGUN_KEY // generated ethereal password
-    //   }
-    // });
+    const canvas = createCanvas(1080, 1080);
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, 1080, 1080);
+    const ticketTemplate = await loadImage(chicken65);
+    ctx.drawImage(ticketTemplate, 0, 0);
+    const qrPNG = await loadImage(qrPng);
+    ctx.drawImage(qrPNG, 650, 500);
+    const canvasURL = canvas.toDataURL();
+    // // Send them an email
+    // let testAccount = await nodemailer.createTestAccount();
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: "teh@raptor.pizza", // generated ethereal user
+        pass: process.env.GOOGLE_MAIL // generated ethereal password
+      }
+    });
 
-    // transporter.use("compile", inlineBase64({ cidPrefix: "somePrefix_" }));
-
+    transporter.use("compile", inlineBase64({ cidPrefix: "somePrefix_" }));
     // let info = await transporter.sendMail({
-    //   from: "lab boy <postmaster@mercury.raptor.pizza>", // sender address
-    //   to: "teh@raptor.pizza", // list of receivers
-    //   subject: "pssssst", // Subject line
-    //   text: "", // plain text body
-    //   html: "<b>psst here is your ticky :)</b>", // html body
+    //   from: "teh@raptor.pizza", // sender address
+    //   to: email, // list of receivers
+    //   subject: "VALENCIA ROOM NOV 2", // Subject line
+    //   text: "Hello world?", // plain text body
+    //   html: EmailTemplate(qrPng), // html body
     //   attachments: [
     //     {
-    //       filename: "aticketforyou!.png",
-    //       content: qrPng.split("base64,")[1],
+    //       filename: "shrOMP.png",
+    //       content: canvasURL.split("base64,")[1],
     //       encoding: "base64"
     //     }
     //   ]

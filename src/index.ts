@@ -11,16 +11,26 @@ import { RSVP } from "./entity/RSVP";
 import { User } from "./entity/User";
 //Connects to the Database -> then starts the express
 let app;
-console.log(process.env.NODE_ENV);
+const herokuConfig = {
+  name: "default",
+  type: "postgres",
+  synchronize: true,
+  logging: true,
+  url: process.env.DATABASE_URL,
+  entities: [Toad, RSVP, User]
+};
+
 const ormFig =
   process.env.NODE_ENV === "production"
     ? {
         name: "default",
         type: "postgres",
-        synchronize: true,
-        logging: true,
-        url: process.env.DATABASE_URL,
-        entities: [Toad, RSVP, User]
+        synchronize: false,
+        logging: false,
+        port: process.env.DB_PORT,
+        username: process.env.DB_USER,
+        password: process.env.DB_PW,
+        database: process.env.DB_NAME
       }
     : null;
 
