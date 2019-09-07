@@ -27,14 +27,22 @@ const ormFig =
         type: "postgres",
         synchronize: false,
         logging: false,
-        port: process.env.DB_PORT,
+        port: 5432,
         username: process.env.DB_USER,
         password: process.env.DB_PW,
         database: process.env.DB_NAME
       }
     : undefined;
-
-createConnection(ormFig)
+createConnection({
+  name: "default",
+  type: "postgres",
+  synchronize: false,
+  logging: false,
+  port: 5432,
+  username: process.env.DB_USER,
+  password: process.env.DB_PW,
+  database: process.env.DB_NAME
+})
   .then(async connection => {
     // Create a new express application instance
     app = express();
