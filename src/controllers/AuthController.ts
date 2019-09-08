@@ -14,16 +14,21 @@ class AuthController {
     if (!(username && password)) {
       res.status(400).send();
     }
-
     //Get user from database
     const userRepository = getRepository(User);
     let user: User;
     try {
-      user = await userRepository.findOneOrFail({
-        where: { raptorname: username }
-      });
+      if (username.includes("@")) {
+        user = await userRepository.findOneOrFail({
+          where: { email: username }
+        });
+      } else {
+        user = await userRepository.findOneOrFail({
+          where: { raptorname: username }
+        });
+      }
     } catch (error) {
-      res.status(401).send({ message: "raptor_not_exist" });
+      return res.status(401).send({ message: "raptor_not_exist" });
     }
 
     //Check if encrypted password match
@@ -119,12 +124,9 @@ class AuthController {
     try {
       await userRepository.save(user);
     } catch (e) {
-      res
-        .status(409)
-        .send({
-          message:
-            "it seems you have already created an account with that email"
-        });
+      res.status(409).send({
+        message: "it seems you have already created an account with that email"
+      });
       return;
     }
 

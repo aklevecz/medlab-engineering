@@ -24,12 +24,11 @@ class ToadController {
   };
 
   static createToad = async (req: Request, res: Response) => {
-    console.log("hi");
     let { cat } = req.body;
     const { userId, username } = res.locals.jwtPayload;
 
-    // const userRepository = getRepository(User)
-    // const { email } = await userRepository.findOne({ where: { id: userId } })
+    const userRepository = getRepository(User);
+    const { email } = await userRepository.findOne({ where: { id: userId } });
 
     // // Maybe each raptor should have a uuid that is used to create a new one with a nonce
     // this will always be the same lol what
@@ -119,7 +118,6 @@ class ToadController {
     });
 
     transporter.use("compile", inlineBase64({ cidPrefix: "somePrefix_" }));
-    const email = "arielklevecz@gmail.com";
     let info = await transporter.sendMail({
       from: "teh@raptor.pizza", // sender address
       to: email, // list of receivers

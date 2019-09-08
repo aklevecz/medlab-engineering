@@ -23,7 +23,6 @@ createConnection({ ...zeConfig, entities: [Toad, RSVP, User] })
   .then(async (connection: any) => {
     // Create a new express application instance
     app = express();
-    console.log(connection);
     // Call midlewares
     app.use(cors());
     app.use(helmet());
@@ -31,6 +30,9 @@ createConnection({ ...zeConfig, entities: [Toad, RSVP, User] })
 
     //Set all routes from routes folder
     app.use("/", routes);
+    app.get("/", (req, res) => {
+      return res.send("hi");
+    });
     const port = process.env.PORT || 4000;
     app.listen(port, () => {
       console.log(`Server started on port ${port}!`);
