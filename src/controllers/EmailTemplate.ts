@@ -1,4 +1,4 @@
-export const EmailTemplate = qrCode => `<!DOCTYPE html>
+export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="width=device-width" />
@@ -17,7 +17,7 @@ export const EmailTemplate = qrCode => `<!DOCTYPE html>
         max-width: 100%;
       }
       body {
-        background-color: black;
+        background-color: white;
         font-family: Arial, Helvetica, sans-serif;
         -webkit-font-smoothing: antialiased;
         font-size: 14px;
@@ -42,7 +42,7 @@ export const EmailTemplate = qrCode => `<!DOCTYPE html>
           BODY & CONTAINER
       ------------------------------------- */
       .body {
-        background-color: black;
+        background-color: white;
         width: 100%;
       }
       /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
@@ -54,7 +54,6 @@ export const EmailTemplate = qrCode => `<!DOCTYPE html>
         max-width: 580px;
         padding: 10px;
         width: 580px;
-        border: 27px white solid;
       }
       /* This should also be a block element, so that it will fill 100% of the .container */
       .content {
@@ -63,6 +62,7 @@ export const EmailTemplate = qrCode => `<!DOCTYPE html>
         margin: 0 auto;
         max-width: 580px;
         padding: 10px;
+        box-shadow: -1px 21px 20px 17px #bdc5c5;
       }
       /* -------------------------------------
           HEADER, FOOTER, MAIN
@@ -127,7 +127,22 @@ export const EmailTemplate = qrCode => `<!DOCTYPE html>
         margin: auto;
         margin-bottom: 50px;
       }
-
+      h1.raptorname {
+        font-size: 2rem;
+        color: white !important;
+        text-align: center;
+        margin: 0 auto 2.8rem;
+        width: 22rem;
+        border-bottom: 1rem white solid;
+        overflow-wrap: break-word !important;
+      }
+      h1.raptorname > a {
+        color: white !important;
+        text-decoration: none !important;
+        overflow-wrap: break-word !important;
+        text-align: center !important;
+        word-break: break-all !important;
+      }
       p,
       ul,
       ol {
@@ -181,7 +196,7 @@ export const EmailTemplate = qrCode => `<!DOCTYPE html>
         text-transform: capitalize;
       }
       .btn-primary table td {
-        background-color: #3498db;
+        background-color: white;
       }
       .btn-primary a {
         background-color: #3498db;
@@ -225,6 +240,7 @@ export const EmailTemplate = qrCode => `<!DOCTYPE html>
         text-align: right;
         margin-right: 22px;
         border-bottom: 17px black dashed;
+        color: white !important;
       }
       .preheader {
         color: transparent;
@@ -333,8 +349,7 @@ export const EmailTemplate = qrCode => `<!DOCTYPE html>
   </head>
   <body class="">
     <span class="preheader"
-      >This is preheader text. Some clients will show this text as a
-      preview.</span
+      >suh dude, here's your ticket :)</span
     >
     <table
       role="presentation"
@@ -360,6 +375,7 @@ export const EmailTemplate = qrCode => `<!DOCTYPE html>
                   >
                     <tr>
                       <td>
+                      <h1 class="raptorname">${name}</h1>
                         <h1 class="circly">!</h1>
 
                         <table
@@ -421,7 +437,7 @@ export const EmailTemplate = qrCode => `<!DOCTYPE html>
               >
                 <tr>
                   <td class="content-block">
-                    <span
+                    <span style="color: lightsalmon;"
                       >MEDLAB ORG, 188 New N Rd, Hoxton, London N1 5EP, UK</span
                     >
                   </td>

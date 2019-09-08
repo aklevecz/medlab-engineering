@@ -33,6 +33,14 @@ export class User {
   role: string;
 
   @Column()
+  @IsNotEmpty()
+  address: string;
+
+  @Column()
+  @IsNotEmpty()
+  wallet: string;
+
+  @Column()
   @CreateDateColumn()
   createdAt: Date;
 

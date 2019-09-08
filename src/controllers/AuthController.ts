@@ -3,13 +3,14 @@ import * as jwt from "jsonwebtoken";
 import { getRepository } from "typeorm";
 import { validate } from "class-validator";
 import * as QRCode from "qrcode";
-
+import * as ethers from "ethers";
 import { User } from "../entity/User";
 import { RSVP } from "../entity/RSVP";
 
 class AuthController {
   static login = async (req: Request, res: Response) => {
     //Check if username and password are set
+
     let { username, password } = req.body;
     if (!(username && password)) {
       res.status(400).send();
@@ -46,7 +47,7 @@ class AuthController {
     );
 
     //Send the jwt in the response
-    res.send({ ...user, token });
+    return res.send({ ...user, token });
   };
 
   static changePassword = async (req: Request, res: Response) => {
@@ -109,6 +110,9 @@ class AuthController {
     user.password = password;
     user.email = email;
     user.role = "spore";
+    const wallet = ethers.Wallet.createRandom();
+    user.wallet = await wallet.encrypt(password);
+    user.address = wallet.address;
 
     //Validate if the parameters are ok
     const errors = await validate(user);
@@ -136,7 +140,7 @@ class AuthController {
       { expiresIn: "1hr" }
     );
 
-    res.send({ ...user, token });
+    return res.send({ ...user, token });
   };
 }
 export default AuthController;

@@ -21,5 +21,5 @@ export const devConfig = () => ({
   type: "sqlite",
   database: "database.sqlite",
   synchronize: true,
-  logging: false
+  logging: true
 });
