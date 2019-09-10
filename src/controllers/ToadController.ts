@@ -18,7 +18,7 @@ class ToadController {
   };
 
   static createToad = async (req: Request, res: Response) => {
-    let { cat } = req.body;
+    let { cat, gen } = req.body;
     const { userId, username } = res.locals.jwtPayload;
 
     const userRepository = getRepository(User);
@@ -44,6 +44,7 @@ class ToadController {
     toad.owner = userId;
     toad.cat = cat;
     toad.qrId = qrId;
+    toad.gen = gen;
 
     await toadRespository.save(toad);
 
