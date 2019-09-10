@@ -9,7 +9,7 @@ import * as bcrypt from "bcryptjs";
 
 import Wab3 from "../wab3/Wab3";
 import { RSVP } from "../entity/RSVP";
-import { sendEmail, makeQR, createCanvasURL } from "./utils";
+import { sendEmail, makeQR, createCanvasURL, randomInt } from "./utils";
 
 class ToadController {
   static getOneById = async (req: Request, res: Response) => {
@@ -28,7 +28,6 @@ class ToadController {
 
     // // Maybe each raptor should have a uuid that is used to create a new one with a nonce
     // this will always be the same lol what
-    console.log(username);
     const qrId = uuidv3(username + cat, process.env.U);
 
     // Creates a toad
@@ -36,12 +35,10 @@ class ToadController {
     const checkToad = await toadRespository.findOne({
       where: { qrId, owner: userId }
     });
-    console.log(checkToad);
     if (checkToad) {
       return res.send({ message: "chu got a toad yo" });
     }
 
-    console.log(qrId);
     // **** COMMENTING OUT TOAD CREATION
     let toad = new Toad();
     toad.owner = userId;
@@ -52,14 +49,20 @@ class ToadController {
 
     const wab3 = new Wab3("geordi");
 
-    console.log(wab3.wab3.eth.getAccounts().then(console.log));
     const toadtract = wab3.getToadtract();
-    console.log(toad.id, qrId);
+
+    const r = randomInt(256);
+    const g = randomInt(256);
+    const b = randomInt(256);
+
     const uriData = {
       username,
-      qrId: bcrypt.hashSync(qrId, 8)
+      qrId: bcrypt.hashSync(qrId, 8),
+      r,
+      g,
+      b
     };
-    console.log(uriData);
+
     const tx = toadtract.methods
       .mintWithTokenURI(address, toad.id, JSON.stringify(uriData))
       .send({
@@ -89,15 +92,6 @@ class ToadController {
     const { userId } = res.locals.jwtPayload;
     const toadRespository = getRepository(Toad);
     const yours = await toadRespository.findOne({ where: { owner: userId } });
-    var opts = {
-      errorCorrectionLevel: "H",
-      type: "image/jpeg",
-      color: { light: "#ff4500" },
-      width: 400,
-      rendererOpts: {
-        quality: 1
-      }
-    };
 
     // NEED TO EITHER PLACE A MARKER TO SPLIT THE IDs THAT WILL HAVE TWO DIGITS OR THINK OF SOMETHING ELSE
     // RANDOM LETTERS PERHAPS-- BUT STILL NEED TO PICK UP THE ID

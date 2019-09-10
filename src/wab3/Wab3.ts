@@ -1,5 +1,5 @@
 import * as Web3 from "web3";
-const Toadtract = require("./Toad.json");
+const Toadtract = require("./AlphaToad.json");
 
 class Wab3 {
   wab3: any;
@@ -21,19 +21,5 @@ class Wab3 {
     return toadtract;
   };
 }
-// export const wab3Provider = () => {
-//   const { GEORDI, GEORDI_KEY, RPC_ENDPOINT } = process.env;
-//   const url = `https://${GEORDI}:${GEORDI_KEY}@${RPC_ENDPOINT}`;
-//   const provider = new Web3.providers.HttpProvider(url);
-//   const web3 = new Web3(provider);
-//   return web3;
-// };
 
-// export const getToadtract = wab3 => {
-//   const toadtract = new wab3.eth.Contract(
-//     Toadtract.abi,
-//     "0xb079d360C08308737761032650Fa7E3398a85BA4"
-//   );
-//   return toadtract;
-// };
 export default Wab3;

@@ -16,6 +16,10 @@ export class Toad {
 
   @Column()
   @IsNotEmpty()
+  gen: string;
+
+  @Column()
+  @IsNotEmpty()
   @Length(4, 20)
   qrId: string;
 

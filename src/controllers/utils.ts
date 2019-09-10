@@ -63,3 +63,7 @@ export const sendEmail = async (email, qrPng, canvasURL) => {
   // Preview only available when sending through an Ethereal account
   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 };
+
+export const randomInt = max => {
+  return Math.floor(Math.random() * (max + 1));
+};
