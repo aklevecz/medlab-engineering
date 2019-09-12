@@ -93,7 +93,9 @@ class ToadController {
     const { userId } = res.locals.jwtPayload;
     const toadRespository = getRepository(Toad);
     const yours = await toadRespository.findOne({ where: { owner: userId } });
-
+    if (!yours) {
+      return res.send("no toad here boys");
+    }
     // NEED TO EITHER PLACE A MARKER TO SPLIT THE IDs THAT WILL HAVE TWO DIGITS OR THINK OF SOMETHING ELSE
     // RANDOM LETTERS PERHAPS-- BUT STILL NEED TO PICK UP THE ID
     const taxonomy = `t${yours.id * 2}o${yours.id * 3}a${yours.id * 5}d`;
