@@ -104,29 +104,21 @@ class ToadController {
   };
 
   static boopToad = async (req: Request, res: Response) => {
-    console.log(req.body);
-    console.log("WHAT THE FUK", process.env.TOAD_ADDRESS);
     const { qr } = req.body;
     const qrSplit = qr.split("?");
     const taxonomy = qrSplit[0];
     const givenQR = qrSplit[1];
-    console.log(givenQR);
     // WAIT IS THIS NOT LOGICAL IF THE NUMBER IS TWO DIGITS YOU DUMMY
     const type = taxonomy[0];
     if (type === "t") {
       const tokenId = parseInt(taxonomy.split("o")[0].split("t")[1]) / 2;
-      console.log(tokenId, givenQR);
       const wab3 = new Wab3("geordi");
       const toadtract = await wab3.getToadtract();
       const qrResp = await toadtract.methods.tokenURI(tokenId).call();
-      console.log(qrResp);
       const { qrId } = JSON.parse(qrResp);
-      console.log(qrId);
       if (bcrypt.compareSync(qrSplit[1], qrId)) {
         const toadRepo = getRepository(Toad);
-        console.log("looking for toad");
         const toad = await toadRepo.findOne(tokenId);
-        console.log(toad);
         // don't really need to await this if the bcrypt checks out and it hasn't been booped
         toadtract.methods.boopIt(tokenId).send({
           from: process.env.GEORDI_PUB_ADDRESS,
@@ -135,7 +127,6 @@ class ToadController {
 
         toad.boop = true;
         toadRepo.save(toad);
-        console.log("toad saved");
         return res.send({ qrId });
       }
     } else if (type === "r") {
