@@ -1,5 +1,7 @@
 import "reflect-metadata";
-require("dotenv").config();
+require("dotenv").config({
+  path: process.env.NODE_ENV === "development" ? ".env.dev" : ".env"
+});
 import { createConnection } from "typeorm";
 import * as express from "express";
 import * as bodyParser from "body-parser";
@@ -11,6 +13,7 @@ import { RSVP } from "./entity/RSVP";
 import { User } from "./entity/User";
 import { devConfig, doConfig, herokuConfig } from "./config/ormFigs";
 //Connects to the Database -> then starts the express
+console.log(process.env.TOAD_ADDRESS);
 let app: any;
 let zeConfig: any;
 const { NODE_ENV, SPACE } = process.env;
@@ -19,6 +22,7 @@ if (NODE_ENV === "development") {
 } else {
   zeConfig = SPACE === "DO" ? doConfig() : herokuConfig();
 }
+console.log(zeConfig);
 createConnection({ ...zeConfig, entities: [Toad, RSVP, User] })
   .then(async (connection: any) => {
     // Create a new express application instance
