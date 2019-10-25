@@ -11,7 +11,8 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
     res.locals.jwtPayload = jwtPayload;
   } catch (error) {
     //If token is not valid, respond with 401 (unauthorized)
-    res.status(401).send();
+    console.log(error);
+    res.status(401).send({ message: "your session has expired" });
     return;
   }
 
@@ -19,7 +20,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
   //We want to send a new token on every request
   const { userId, username } = jwtPayload;
   const newToken = jwt.sign({ userId, username }, process.env.sacret, {
-    expiresIn: "1h"
+    expiresIn: "7d"
   });
   res.setHeader("token", newToken);
 

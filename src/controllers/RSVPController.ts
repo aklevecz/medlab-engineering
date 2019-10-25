@@ -7,6 +7,7 @@ const uuidv3 = require("uuid/v3");
 
 import { RSVP } from "../entity/RSVP";
 import { User } from "../entity/User";
+import { Toad } from "../entity/Toad";
 
 class RSVPController {
   static resendEmail = async (req: Request, res: Response) => {
@@ -73,6 +74,24 @@ class RSVPController {
     const { result } = req.body;
     console.log("hu", result);
     return result;
+  };
+
+  static boopEmail = async (req: Request, res: Response) => {
+    const { email, raptor } = req.body;
+    if (raptor) {
+      const userRepo = getRepository(User);
+      const toadRepo = getRepository(Toad);
+      const raptor = await userRepo.findOne({ where: { email } });
+      const toad = await toadRepo.findOne({ where: { owner: raptor.id } });
+      return res.send({ toad });
+    } else {
+      const rsvpRepo = getRepository(RSVP);
+      const rsvp = await rsvpRepo.findOne({ where: { email } });
+      rsvp.boop = true;
+      await rsvpRepo.save(rsvp);
+      return res.send({ rsvp });
+    }
+    return res.send({ raptor });
   };
 }
 

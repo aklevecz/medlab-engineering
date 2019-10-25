@@ -100,6 +100,7 @@ class ToadController {
     // RANDOM LETTERS PERHAPS-- BUT STILL NEED TO PICK UP THE ID
     const taxonomy = `t${yours.id * 2}o${yours.id * 3}a${yours.id * 5}d`;
     const qrPng = await makeQR(`${taxonomy}?${yours.qrId}`);
+    console.log(`${taxonomy}?${yours.qrId}`);
     res.send([{ qrPng, id: yours.id }]);
   };
 
@@ -119,6 +120,9 @@ class ToadController {
       if (bcrypt.compareSync(qrSplit[1], qrId)) {
         const toadRepo = getRepository(Toad);
         const toad = await toadRepo.findOne(tokenId);
+        if (toad.boop === true) {
+          return res.send({ data: "booped", boopTime: toad.updatedAt });
+        }
         // don't really need to await this if the bcrypt checks out and it hasn't been booped
         toadtract.methods.boopIt(tokenId).send({
           from: process.env.GEORDI_PUB_ADDRESS,
@@ -135,6 +139,10 @@ class ToadController {
 
       if (!rsvp) {
         return res.status(409).send("nada here");
+      }
+
+      if (rsvp.boop === true) {
+        return res.send({ data: "booped" });
       }
 
       rsvp.boop = true;

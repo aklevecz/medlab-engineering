@@ -43,7 +43,7 @@ class AuthController {
     const token = jwt.sign(
       { userId: user.id, username: user.raptorname },
       process.env.sacret,
-      { expiresIn: "1h" }
+      { expiresIn: "7d" }
     );
 
     //Send the jwt in the response

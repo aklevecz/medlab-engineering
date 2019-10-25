@@ -3,16 +3,21 @@ import { getRepository } from "typeorm";
 import { validate } from "class-validator";
 
 import { User } from "../entity/User";
+import { RSVP } from "../entity/RSVP";
 
 class UserController {
   static listAll = async (req: Request, res: Response) => {
     //Get users from database
     const userRepository = getRepository(User);
     const users = await userRepository.find({
-      select: ["id", "raptorname", "role"] //We dont want to send the passwords on response
+      select: ["id", "raptorname", "email"] //We dont want to send the passwords on response
     });
     //Send the users object
-    res.send(users);
+    const rsvpRepo = getRepository(RSVP);
+    const rsvps = await rsvpRepo.find({
+      select: ["email", "boop"]
+    });
+    res.send({ raptors: { users }, rsvps: { rsvps } });
   };
 
   static getOneById = async (req: Request, res: Response) => {
