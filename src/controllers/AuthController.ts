@@ -108,7 +108,7 @@ class AuthController {
     let user = new User();
     user.raptorname = username;
     user.password = password;
-    user.email = email;
+    user.email = email.toLowerCase();
     user.role = "spore";
     const wallet = ethers.Wallet.createRandom();
     user.wallet = await wallet.encrypt(password);

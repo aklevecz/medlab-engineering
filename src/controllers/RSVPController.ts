@@ -40,7 +40,7 @@ class RSVPController {
     }
 
     let rsvp = new RSVP();
-    rsvp.email = email;
+    rsvp.email = email.toLowerCase();
     rsvp.event = "raptorhole";
     rsvp.boop = false;
     const qrId = uuidv3(email + event, process.env.U);
