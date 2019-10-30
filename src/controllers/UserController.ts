@@ -4,20 +4,28 @@ import { validate } from "class-validator";
 
 import { User } from "../entity/User";
 import { RSVP } from "../entity/RSVP";
+import { Toad } from "../entity/Toad"
 
 class UserController {
   static listAll = async (req: Request, res: Response) => {
     //Get users from database
     const userRepository = getRepository(User);
+    const toadRepository = getRepository(Toad)
     const users = await userRepository.find({
       select: ["id", "raptorname", "email"] //We dont want to send the passwords on response
     });
+    const choosers = []
+    for (var i = 0; i < users.length; i++) {
+      const toad = await toadRepository.findOne({ where: { owner: users[i].id } })
+      console.log(users[i], toad)
+      choosers.push({ ...users[i], boop: toad.boop })
+    }
     //Send the users object
     const rsvpRepo = getRepository(RSVP);
     const rsvps = await rsvpRepo.find({
       select: ["email", "boop"]
     });
-    res.send({ raptors: { users }, rsvps: { rsvps } });
+    res.send({ raptors: { choosers }, rsvps: { rsvps } });
   };
 
   static getOneById = async (req: Request, res: Response) => {

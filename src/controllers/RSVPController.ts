@@ -83,6 +83,9 @@ class RSVPController {
       const toadRepo = getRepository(Toad);
       const raptor = await userRepo.findOne({ where: { email } });
       const toad = await toadRepo.findOne({ where: { owner: raptor.id } });
+      toad.boop = true
+      await toadRepo.save(toad)
+      console.log(toad)
       return res.send({ toad });
     } else {
       const rsvpRepo = getRepository(RSVP);
