@@ -17,8 +17,11 @@ class UserController {
     const choosers = []
     for (var i = 0; i < users.length; i++) {
       const toad = await toadRepository.findOne({ where: { owner: users[i].id } })
-      console.log(users[i], toad)
-      choosers.push({ ...users[i], boop: toad.boop })
+      if (toad) {
+        choosers.push({ ...users[i], boop: toad.boop })
+      } else {
+        choosers.push({ ...users[i], boop: false })
+      }
     }
     //Send the users object
     const rsvpRepo = getRepository(RSVP);
