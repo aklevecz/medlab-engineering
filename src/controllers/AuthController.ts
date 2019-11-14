@@ -24,9 +24,13 @@ class AuthController {
           where: { email: username }
         });
       } else {
-        user = await userRepository.findOneOrFail({
-          where: { raptorname: username }
-        });
+        // user = await userRepository.findOneOrFail({
+        //   where: { raptorname: username }
+        // });
+
+        user = await userRepository.createQueryBuilder()
+          .where("LOWER(raptorname) = LOWER(:username)", { username }).getOne();
+        console.log(user)
       }
     } catch (error) {
       return res.status(401).send({ message: "raptor_not_exist" });
@@ -98,9 +102,12 @@ class AuthController {
     }
 
     const userRepository = getRepository(User);
-    const aUser = await userRepository.findOne({
-      where: { raptorname: username }
-    });
+    // const aUser = await userRepository.findOne({
+    //   where: { raptorname: username }
+    // });
+
+    const aUser = await userRepository.createQueryBuilder()
+      .where("LOWER(raptorname) = LOWER(:username)", { username }).getOne();
     if (aUser) {
       return res.status(409).send({ message: "raptorname already is taken" });
     }
@@ -108,7 +115,7 @@ class AuthController {
     let user = new User();
     user.raptorname = username;
     user.password = password;
-    user.email = email;
+    user.email = email.toLowerCase();
     user.role = "spore";
     const wallet = ethers.Wallet.createRandom();
     user.wallet = await wallet.encrypt(password);

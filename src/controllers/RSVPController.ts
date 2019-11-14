@@ -8,6 +8,7 @@ const uuidv3 = require("uuid/v3");
 import { RSVP } from "../entity/RSVP";
 import { User } from "../entity/User";
 import { Toad } from "../entity/Toad";
+import Wab3 from "../wab3/Wab3";
 
 class RSVPController {
   static resendEmail = async (req: Request, res: Response) => {
@@ -39,7 +40,7 @@ class RSVPController {
     }
 
     let rsvp = new RSVP();
-    rsvp.email = email;
+    rsvp.email = email.toLowerCase();
     rsvp.event = "raptorhole";
     rsvp.boop = false;
     const qrId = uuidv3(email + event, process.env.U);
@@ -83,6 +84,14 @@ class RSVPController {
       const toadRepo = getRepository(Toad);
       const raptor = await userRepo.findOne({ where: { email } });
       const toad = await toadRepo.findOne({ where: { owner: raptor.id } });
+      toad.boop = true
+      await toadRepo.save(toad)
+      const wab3 = new Wab3("geordi");
+      const toadtract = await wab3.getToadtract();
+      toadtract.methods.boopIt(toad.id).send({
+        from: process.env.GEORDI_PUB_ADDRESS,
+        gas: "100000000"
+      });
       return res.send({ toad });
     } else {
       const rsvpRepo = getRepository(RSVP);
