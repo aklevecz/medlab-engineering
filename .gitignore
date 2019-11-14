@@ -5,6 +5,7 @@ build/
 tmp/
 temp/
 .env
+.env.dev
 database.sqlite
 mailgunbs
 dist/

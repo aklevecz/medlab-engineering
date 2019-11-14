@@ -11,6 +11,7 @@ import routes from "./routes";
 import { Toad } from "./entity/Toad";
 import { RSVP } from "./entity/RSVP";
 import { User } from "./entity/User";
+import { FormResponse } from "./entity/FormResponse";
 import { devConfig, doConfig, herokuConfig } from "./config/ormFigs";
 //Connects to the Database -> then starts the express
 console.log(process.env.TOAD_ADDRESS);
@@ -23,7 +24,7 @@ if (NODE_ENV === "development") {
   zeConfig = SPACE === "DO" ? doConfig() : herokuConfig();
 }
 console.log(zeConfig);
-createConnection({ ...zeConfig, entities: [Toad, RSVP, User] })
+createConnection({ ...zeConfig, entities: [Toad, RSVP, User, FormResponse] })
   .then(async (connection: any) => {
     // Create a new express application instance
     app = express();
