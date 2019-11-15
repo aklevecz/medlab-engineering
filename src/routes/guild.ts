@@ -5,5 +5,6 @@ import GuildController from "../controllers/GuildController";
 const router = Router();
 
 router.post("/responses", GuildController.recordResponse);
+router.get("/responses", GuildController.getResponses);
 
 export default router;

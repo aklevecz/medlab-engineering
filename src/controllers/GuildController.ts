@@ -3,9 +3,16 @@ import { getRepository } from "typeorm";
 import { FormResponse } from "../entity/FormResponse";
 
 class GuildController {
+  static getResponses = async (req: Request, res: Response) => {
+    const { category } = req.params;
+    const formResRepo = getRepository(FormResponse);
+
+    const responses = formResRepo.find({ where: { category } });
+
+    return res.send({ responses });
+  };
   static recordResponse = async (req: Request, res: Response) => {
     const { name, email, why, category } = req.body;
-    console.log(name, email, why, category);
     if (!name || !email || !why) {
       return res.status(409).send({ error: "one of the fields was blank" });
     }
