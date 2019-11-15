@@ -4,7 +4,7 @@ import { FormResponse } from "../entity/FormResponse";
 
 class GuildController {
   static getResponses = async (req: Request, res: Response) => {
-    const { category } = req.params;
+    const { category } = req.query;
     const formResRepo = getRepository(FormResponse);
 
     const responses = await formResRepo.find({ where: { category } });
