@@ -7,7 +7,7 @@ class GuildController {
     const { category } = req.params;
     const formResRepo = getRepository(FormResponse);
 
-    const responses = formResRepo.find({ where: { category } });
+    const responses = await formResRepo.find({ where: { category } });
 
     return res.send({ responses });
   };
