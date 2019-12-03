@@ -28,14 +28,16 @@ class AuthController {
         //   where: { raptorname: username }
         // });
 
-        user = await userRepository.createQueryBuilder()
-          .where("LOWER(raptorname) = LOWER(:username)", { username }).getOne();
-        console.log(user)
+        user = await userRepository
+          .createQueryBuilder()
+          .where("LOWER(raptorname) = LOWER(:username)", { username })
+          .getOne();
+
+        if (!user) return res.status(401).send({ message: "raptor_not_exist" });
       }
     } catch (error) {
       return res.status(401).send({ message: "raptor_not_exist" });
     }
-
     //Check if encrypted password match
     console.log(!user.checkIfUnencryptedPasswordIsValid(password));
     if (!user.checkIfUnencryptedPasswordIsValid(password)) {
@@ -106,8 +108,10 @@ class AuthController {
     //   where: { raptorname: username }
     // });
 
-    const aUser = await userRepository.createQueryBuilder()
-      .where("LOWER(raptorname) = LOWER(:username)", { username }).getOne();
+    const aUser = await userRepository
+      .createQueryBuilder()
+      .where("LOWER(raptorname) = LOWER(:username)", { username })
+      .getOne();
     if (aUser) {
       return res.status(409).send({ message: "raptorname already is taken" });
     }
