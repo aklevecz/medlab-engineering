@@ -78,8 +78,9 @@ class RSVPController {
   };
 
   static boopEmail = async (req: Request, res: Response) => {
-    const { email, raptor } = req.body;
-    if (raptor) {
+  const { email, raptor } = req.body;
+  console.log(raptor)
+    if (raptor==='raptor') {
       const userRepo = getRepository(User);
       const toadRepo = getRepository(Toad);
       const raptor = await userRepo.findOne({ where: { email } });
