@@ -9,8 +9,8 @@ export const herokuConfig = () => ({
 export const doConfig = () => ({
   name: "default",
   type: "postgres",
-  synchronize: false,
-  logging: false,
+  synchronize: true,
+  logging: true,
   port: 5432,
   username: process.env.DB_USER,
   password: process.env.DB_PW,

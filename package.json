@@ -39,7 +39,7 @@
   },
   "scripts": {
     "build": "tsc --project tsconfig.server.json",
-    "start:do": "cross-env NODE_ENV=production SPACE=DO node dist/index.js",
+    "start": "cross-env NODE_ENV=production SPACE=DO node dist/index.js",
     "start:heroku": "cross-env NODE_ENV=production SPACE=HEROKU node dist/index.js",
     "dev": "ts-node-dev --project tsconfig.server.json src/index.ts",
     "test": "jest",
