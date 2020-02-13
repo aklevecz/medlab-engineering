@@ -12,9 +12,9 @@ import { Toad } from "./entity/Toad";
 import { RSVP } from "./entity/RSVP";
 import { User } from "./entity/User";
 import { FormResponse } from "./entity/FormResponse";
+import { Hunt } from "./entity/Hunt";
 import { devConfig, doConfig, herokuConfig } from "./config/ormFigs";
 //Connects to the Database -> then starts the express
-console.log(process.env.TOAD_ADDRESS);
 let app: any;
 let zeConfig: any;
 const { NODE_ENV, SPACE } = process.env;
@@ -23,8 +23,10 @@ if (NODE_ENV === "development") {
 } else {
   zeConfig = SPACE === "DO" ? doConfig() : herokuConfig();
 }
-console.log(zeConfig);
-createConnection({ ...zeConfig, entities: [Toad, RSVP, User, FormResponse] })
+createConnection({
+  ...zeConfig,
+  entities: [Toad, RSVP, User, FormResponse, Hunt]
+})
   .then(async (connection: any) => {
     // Create a new express application instance
     app = express();
@@ -35,9 +37,7 @@ createConnection({ ...zeConfig, entities: [Toad, RSVP, User, FormResponse] })
 
     //Set all routes from routes folder
     app.use("/", routes);
-    app.get("/", (req, res) => {
-      return res.send("hi");
-    });
+
     const port = process.env.PORT || 4000;
     app.listen(port, () => {
       console.log(`Server started on port ${port}!`);
