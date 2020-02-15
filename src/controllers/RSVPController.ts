@@ -43,6 +43,7 @@ class RSVPController {
     rsvp.email = email.toLowerCase();
     rsvp.event = "raptorhole";
     rsvp.boop = false;
+    console.log(process.env.U);
     const qrId = uuidv3(email + event, process.env.U);
     rsvp.qrId = qrId;
     const rsvpRepo = getRepository(RSVP);
@@ -78,15 +79,15 @@ class RSVPController {
   };
 
   static boopEmail = async (req: Request, res: Response) => {
-  const { email, raptor } = req.body;
-  console.log(raptor)
-    if (raptor==='raptor') {
+    const { email, raptor } = req.body;
+    console.log(raptor);
+    if (raptor === "raptor") {
       const userRepo = getRepository(User);
       const toadRepo = getRepository(Toad);
       const raptor = await userRepo.findOne({ where: { email } });
       const toad = await toadRepo.findOne({ where: { owner: raptor.id } });
-      toad.boop = true
-      await toadRepo.save(toad)
+      toad.boop = true;
+      await toadRepo.save(toad);
       const wab3 = new Wab3("geordi");
       const toadtract = await wab3.getToadtract();
       toadtract.methods.boopIt(toad.id).send({

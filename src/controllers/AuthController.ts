@@ -53,7 +53,9 @@ class AuthController {
     );
 
     //Send the jwt in the response
-    return res.send({ ...user, token });
+    const { id, raptorname, role, address } = user;
+
+    return res.send({ id, raptorname, role, address, token });
   };
 
   static changePassword = async (req: Request, res: Response) => {
@@ -151,7 +153,8 @@ class AuthController {
       { expiresIn: "1hr" }
     );
 
-    return res.send({ ...user, token });
+    const { id, raptorname, role, address } = user;
+    return res.send({ id, raptorname, role, address, token });
   };
 }
 export default AuthController;

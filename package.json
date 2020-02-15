@@ -44,6 +44,7 @@
     "dev": "ts-node-dev --project tsconfig.server.json src/index.ts",
     "test": "jest",
     "prod": "tsc && node ./build/app.js",
+    "postinstall": "cd node_modules/canvas && /usr/bin/node /usr/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js rebuild",
     "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run"
   }
 }

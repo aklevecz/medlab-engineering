@@ -11,6 +11,8 @@ import Wab3 from "../wab3/Wab3";
 import { RSVP } from "../entity/RSVP";
 import { sendEmail, makeQR, createCanvasURL, randomInt } from "./utils";
 
+const CURRENT_GEN = "beta";
+
 class ToadController {
   static getOneById = async (req: Request, res: Response) => {
     const toadRespository = getRepository(Toad);
@@ -71,6 +73,8 @@ class ToadController {
         gas: "100000000"
       });
 
+    // combine the taxonomy function into one thing in the utils duh
+
     // NEED TO EITHER PLACE A MARKER TO SPLIT THE IDs THAT WILL HAVE TWO DIGITS OR THINK OF SOMETHING ELSE
     // RANDOM LETTERS PERHAPS-- BUT STILL NEED TO PICK UP THE ID
     const taxonomy = `t${toad.id * 2}o${toad.id * 3}a${toad.id * 5}d`;
@@ -92,9 +96,12 @@ class ToadController {
     // then like do other stuff ok?
     const { userId } = res.locals.jwtPayload;
     const toadRespository = getRepository(Toad);
-    const yours = await toadRespository.findOne({ where: { owner: userId } });
+    const yours = await toadRespository.findOne({
+      where: { owner: userId, gen: CURRENT_GEN }
+    });
+
     if (!yours) {
-      return res.send("no toad here boys");
+      return res.status(401).send({ message: "no_owned_toad" });
     }
     // NEED TO EITHER PLACE A MARKER TO SPLIT THE IDs THAT WILL HAVE TWO DIGITS OR THINK OF SOMETHING ELSE
     // RANDOM LETTERS PERHAPS-- BUT STILL NEED TO PICK UP THE ID
