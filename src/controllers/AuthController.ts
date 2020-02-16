@@ -58,6 +58,20 @@ class AuthController {
     return res.send({ id, raptorname, role, address, token });
   };
 
+  static changeRole = async (req: Request, res: Response) => {
+    return res.send("not yet");
+    const id = res.locals.jwtPayload.userId;
+    const userRepo = getRepository(User);
+
+    const user = await userRepo.findOne(id);
+    if (!user) return res.status(404).send({ error: "no_user" });
+
+    const { role } = req.body;
+    user.role = role;
+    userRepo.save(user);
+    return res.send({ message: `role_is_${role}` });
+  };
+
   static changePassword = async (req: Request, res: Response) => {
     //Get ID from JWT
     const id = res.locals.jwtPayload.userId;

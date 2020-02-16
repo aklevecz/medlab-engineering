@@ -66,7 +66,7 @@ class ToadController {
       b
     };
 
-    const tx = toadtract.methods
+    const tx = await toadtract.methods
       .mintWithTokenURI(address, toad.id, JSON.stringify(uriData))
       .send({
         from: process.env.GEORDI_PUB_ADDRESS,
@@ -101,13 +101,13 @@ class ToadController {
     });
 
     if (!yours) {
-      return res.status(401).send({ message: "no_owned_toad" });
+      return res.status(404).send({ message: "no_owned_toad" });
     }
+    console.log("sending the toad");
     // NEED TO EITHER PLACE A MARKER TO SPLIT THE IDs THAT WILL HAVE TWO DIGITS OR THINK OF SOMETHING ELSE
     // RANDOM LETTERS PERHAPS-- BUT STILL NEED TO PICK UP THE ID
     const taxonomy = `t${yours.id * 2}o${yours.id * 3}a${yours.id * 5}d`;
     const qrPng = await makeQR(`${taxonomy}?${yours.qrId}`);
-    console.log(`${taxonomy}?${yours.qrId}`);
     res.send([{ qrPng, id: yours.id }]);
   };
 

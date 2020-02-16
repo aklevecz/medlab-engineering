@@ -20,7 +20,7 @@ export const createCanvasURL = async qrPng => {
 const opts = {
   errorCorrectionLevel: "H",
   type: "image/jpeg",
-  color: { light: "#ff4500" },
+  color: { light: "#ffffff" },
   width: 400,
   rendererOpts: {
     quality: 1
