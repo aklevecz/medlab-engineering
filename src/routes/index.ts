@@ -4,6 +4,7 @@ import user from "./user";
 import toad from "./toad";
 import rsvp from "./rsvp";
 import guild from "./guild";
+import survey from "./survey";
 // import hunt from "./hunt";
 
 const routes = Router();
@@ -13,6 +14,7 @@ routes.use("/user", user);
 routes.use("/toad", toad);
 routes.use("/rsvp", rsvp);
 routes.use("/guild", guild);
+routes.use("/survey", survey);
 
 // [1, 2, 3, 4, 5, 6].map(r => {
 //   routes.use(`/${r}`, hunt);

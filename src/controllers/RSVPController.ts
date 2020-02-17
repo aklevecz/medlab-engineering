@@ -41,9 +41,8 @@ class RSVPController {
 
     let rsvp = new RSVP();
     rsvp.email = email.toLowerCase();
-    rsvp.event = "raptorhole";
+    rsvp.event = "meiosis";
     rsvp.boop = false;
-    console.log(process.env.U);
     const qrId = uuidv3(email + event, process.env.U);
     rsvp.qrId = qrId;
     const rsvpRepo = getRepository(RSVP);
@@ -61,6 +60,7 @@ class RSVPController {
     const canvasURL = await createCanvasURL(qrPng);
     sendEmail(email, qrPng, canvasURL);
 
+    // this looks a little redundant
     try {
       await rsvpRepo.save(rsvp);
     } catch (e) {

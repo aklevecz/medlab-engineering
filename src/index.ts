@@ -13,6 +13,7 @@ import { RSVP } from "./entity/RSVP";
 import { User } from "./entity/User";
 import { FormResponse } from "./entity/FormResponse";
 import { Hunt } from "./entity/Hunt";
+import { Survey } from "./entity/Survey";
 import { devConfig, doConfig, herokuConfig } from "./config/ormFigs";
 //Connects to the Database -> then starts the express
 let app: any;
@@ -25,7 +26,7 @@ if (NODE_ENV === "development") {
 }
 createConnection({
   ...zeConfig,
-  entities: [Toad, RSVP, User, FormResponse, Hunt]
+  entities: [Toad, RSVP, User, FormResponse, Hunt, Survey]
 })
   .then(async (connection: any) => {
     // Create a new express application instance
