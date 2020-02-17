@@ -41,7 +41,7 @@ class RSVPController {
 
     let rsvp = new RSVP();
     rsvp.email = email.toLowerCase();
-    rsvp.event = "meiosis";
+    rsvp.event = event;
     rsvp.boop = false;
     const qrId = uuidv3(email + event, process.env.U);
     rsvp.qrId = qrId;
