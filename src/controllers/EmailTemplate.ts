@@ -3,7 +3,7 @@ export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
   <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Simple Transactional Email</title>
+    <title>MEIOSIS</title>
     <style>
       /* -------------------------------------
           GLOBAL RESETS
@@ -17,7 +17,7 @@ export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
         max-width: 100%;
       }
       body {
-        background-color: white;
+        background-color: black;
         font-family: Arial, Helvetica, sans-serif;
         -webkit-font-smoothing: antialiased;
         font-size: 14px;
@@ -42,7 +42,7 @@ export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
           BODY & CONTAINER
       ------------------------------------- */
       .body {
-        background-color: white;
+        background-color: black;
         width: 100%;
       }
       /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
@@ -54,6 +54,8 @@ export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
         max-width: 580px;
         padding: 10px;
         width: 580px;
+        border: 57px #e5f560 solid;
+        background: #ffffaa;
       }
       /* This should also be a block element, so that it will fill 100% of the .container */
       .content {
@@ -62,13 +64,12 @@ export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
         margin: 0 auto;
         max-width: 580px;
         padding: 10px;
-        box-shadow: -1px 21px 20px 17px #bdc5c5;
       }
       /* -------------------------------------
           HEADER, FOOTER, MAIN
       ------------------------------------- */
       .main {
-        background: rgb(235, 60, 60);
+        background: rgb(60, 235, 227);
         border-radius: 3px;
         width: 100%;
       }
@@ -128,20 +129,17 @@ export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
         margin-bottom: 50px;
       }
       h1.raptorname {
-        font-size: 2rem;
-        color: white !important;
+        font-size: 4rem;
+        color: white;
         text-align: center;
-        margin: 0 auto 2.8rem;
+        margin: 0 auto 3rem;
         width: 22rem;
         border-bottom: 1rem white solid;
-        overflow-wrap: break-word !important;
       }
       h1.raptorname > a {
         color: white !important;
         text-decoration: none !important;
-        overflow-wrap: break-word !important;
-        text-align: center !important;
-        word-break: break-all !important;
+        overflow-wrap: break-word;
       }
       p,
       ul,
@@ -196,7 +194,7 @@ export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
         text-transform: capitalize;
       }
       .btn-primary table td {
-        background-color: white;
+        background-color: #3498db;
       }
       .btn-primary a {
         background-color: #3498db;
@@ -239,8 +237,8 @@ export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
         margin-bottom: 2px;
         text-align: right;
         margin-right: 22px;
-        border-bottom: 17px black dashed;
-        color: white !important;
+        border-bottom: 17px #ffffaa dashed;
+        color: white;
       }
       .preheader {
         color: transparent;
@@ -348,15 +346,14 @@ export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
     </style>
   </head>
   <body class="">
-    <span class="preheader"
-      >suh dude, here's your ticket :)</span
-    >
+    <span class="preheader">you are sooo good looking!</span>
     <table
       role="presentation"
       border="0"
       cellpadding="0"
       cellspacing="0"
       class="body"
+      style="background:white;"
     >
       <tr>
         <td>&nbsp;</td>
@@ -375,9 +372,6 @@ export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
                   >
                     <tr>
                       <td>
-                      <h1 class="raptorname">${name}</h1>
-                        <h1 class="circly">!</h1>
-
                         <table
                           role="presentation"
                           border="0"
@@ -397,7 +391,7 @@ export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
                                     <tr>
                                       <td>
                                         <img
-                                          style="display: block; margin: auto;border:35px white solid;"
+                                          style="display: block; margin: auto;border:35px white solid;background:white;max-width:500px"
                                           src="${qrCode}"
                                         />
                                       </td>
@@ -409,11 +403,11 @@ export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
                           </tbody>
                         </table>
                         <div class="paragraph">
-                          <p>VALENCIA ROOM</p>
-                          <p>NOV 2</p>
+                          <p>MONARCH</p>
+                          <p>MAY 8</p>
                         </div>
                         <img
-                          style=" margin-top: 29px; margin-left: 14px;"
+                          style=" margin-top: 22px; margin-left: 14px;"
                           src="data:image/png;base64,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"
                         />
                       </td>
@@ -437,7 +431,7 @@ export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
               >
                 <tr>
                   <td class="content-block">
-                    <span style="color: lightsalmon;"
+                    <span
                       >MEDLAB ORG, 188 New N Rd, Hoxton, London N1 5EP, UK</span
                     >
                   </td>
@@ -453,5 +447,4 @@ export const EmailTemplate = (qrCode, name) => `<!DOCTYPE html>
     </table>
   </body>
 </html>
-
 `;

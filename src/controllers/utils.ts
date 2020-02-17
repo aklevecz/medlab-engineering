@@ -45,8 +45,8 @@ export const sendEmail = async (email, qrPng, canvasURL) => {
   let info = await transporter.sendMail({
     from: "teh@raptor.pizza", // sender address
     to: email, // list of receivers
-    subject: "VALENCIA ROOM NOV 2", // Subject line
-    text: "THIS IS YOUR RSVP", // plain text body
+    subject: "MONARCH ~ MAY 8", // Subject line
+    text: "henlo ~ here is your ticky!", // plain text body
     html: EmailTemplate(qrPng, email), // html body
     attachments: [
       {
